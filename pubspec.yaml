@@ -34,6 +34,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   icons_plus: ^4.0.0
   google_fonts: ^6.1.0
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
 
 dev_dependencies:
   flutter_test:
@@ -60,10 +62,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/banner1.png 
+     - assets/images/stockmaster.png
      - assets/icons/button_icon.png
-     - assets/icons/facebook_icon.png
-     - assets/icons/google_icon.png
-     - assets/icons/x_icon.png
      - assets/icons/icon.png
      - assets/icons/vetor_icon.png 
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stockmaster/screens/home.dart';
+import 'package:stockmaster/screens/signin_screen.dart';
 
 class TelaInicial extends StatelessWidget {
   const TelaInicial({super.key});
@@ -79,7 +79,7 @@ class BotaoSetaParaDireita extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          MaterialPageRoute(builder: (context) => const SignInScreen()),
         );
       },
       style: ElevatedButton.styleFrom(
