@@ -4,6 +4,8 @@ import 'package:stockmaster/screens/signin_screen.dart';
 import 'package:stockmaster/services/autenticacao_service.dart';
 import 'package:stockmaster/theme/colors.dart';
 import 'package:stockmaster/widgets/snackbar.dart';
+import 'dart:async';
+import 'package:stockmaster/screens/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -16,11 +18,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
 
-  TextEditingController _nomeController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
-  AutenticacaoServico _autenticacaoServico = AutenticacaoServico();
+  final AutenticacaoServico _autenticacaoServico = AutenticacaoServico();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       pinned: true,
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
-        background: Image.asset('assets/images/stockmaster.png', fit: BoxFit.cover),
+        background:
+            Image.asset('assets/images/stockmaster.png', fit: BoxFit.cover),
       ),
     );
   }
@@ -51,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   SliverToBoxAdapter _buildSliverToBoxAdapter() {
     return SliverToBoxAdapter(
       child: Container(
-        padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
+        padding: const EdgeInsets.fromLTRB(25.0, 15.0, 25.0, 20.0),
         decoration: const BoxDecoration(
           color: AppColors.ice,
           borderRadius: BorderRadius.only(
@@ -66,22 +69,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildHeader(),
-                const SizedBox(height: 40.0),
-                _buildTextField('Nome completo', 'Insira o nome completo', _nomeController, (value) {
+                const SizedBox(height: 20.0),
+                _buildTextField(
+                    'Nome completo', 'Insira o nome completo', _nomeController,
+                    (value) {
                   if (value == null || value.isEmpty) {
                     return 'Insira seu nome completo!';
                   }
                   return null;
                 }),
                 const SizedBox(height: 25.0),
-                _buildTextField('Email', 'Insira um Email válido', _emailController, (value) {
+                _buildTextField(
+                    'Email', 'Insira um Email válido', _emailController,
+                    (value) {
                   if (value == null || value.isEmpty) {
                     return 'Insira um Email válido!';
                   }
                   return null;
                 }),
                 const SizedBox(height: 25.0),
-                _buildTextField('Senha', 'Crie uma senha', _senhaController, (value) {
+                _buildTextField('Senha', 'Crie uma senha', _senhaController,
+                    (value) {
                   if (value == null || value.isEmpty) {
                     return 'Insira uma senha!';
                   }
@@ -110,14 +118,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return const Text(
       'Registre-se',
       style: TextStyle(
-        fontSize: 30.0,
+        fontSize: 25.0,
         fontWeight: FontWeight.w900,
         color: AppColors.darkgrey,
       ),
     );
   }
 
-  Widget _buildTextField(String label, String hintText, TextEditingController controller, String? Function(String?) validator,
+  Widget _buildTextField(String label, String hintText,
+      TextEditingController controller, String? Function(String?) validator,
       {bool obscureText = false}) {
     return TextFormField(
       controller: controller,
@@ -180,7 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: registrarUsuario,
+        onPressed: _registrarUsuario,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.orange,
           padding: const EdgeInsets.all(16.0),
@@ -274,38 +283,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future<void> registrarUsuario() async {
-    try {
-      String nome = _nomeController.text;
-      String email = _emailController.text;
-      String senha = _senhaController.text;
+  Future<void> _registrarUsuario() async {
+    BuildContext currentContext = context; // Capturando o contexto antes da função assíncrona
 
-      if (_formSignupKey.currentState!.validate() && agreePersonalData) {
-        String? erro = await _autenticacaoServico.registrarUsuario(
-          nome: nome,
-          email: email,
-          senha: senha,
-        );
+    String nome = _nomeController.text;
+    String email = _emailController.text;
+    String senha = _senhaController.text;
 
-        if (erro != null) {
-          MostrarSnackBar(context: context, texto: erro);
-        } else {
+    if (_formSignupKey.currentState!.validate() && agreePersonalData) {
+      String? erro = await _autenticacaoServico.registrarUsuario(
+        nome: nome,
+        email: email,
+        senha: senha,
+      );
+
+      if (erro != null) {
+        if (!agreePersonalData) {
           MostrarSnackBar(
-            context: context,
-            texto: "Cadastro efetuado com sucesso!",
-            isErro: false,
+            context: currentContext,
+            texto: 'Concorde com a política de privacidade',
+          );
+        } else {
+          MostrarSnackBar(context: currentContext, texto: erro);
+        }
+      } else {
+        if (mounted) {
+          Navigator.pushReplacement(
+            currentContext,
+            MaterialPageRoute(builder: (context) => const Home()),
           );
         }
-      } else if (!agreePersonalData) {
-        MostrarSnackBar(
-          context: context,
-          texto: 'Concorde com a política de privacidade',
-        );
-      } else {
-        MostrarSnackBar(context: context, texto: 'Cadastro inválido');
       }
-    } catch (e) {
-      print("Erro ao registrar usuário: $e");
     }
+  }
+
+  void _mostrarSnackBar(
+      {required BuildContext context, required String texto}) {
+    MostrarSnackBar(context: context, texto: texto);
   }
 }

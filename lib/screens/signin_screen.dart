@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:stockmaster/screens/home.dart';
 import 'package:stockmaster/screens/signup_screen.dart';
 import 'package:stockmaster/theme/colors.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -13,6 +15,11 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
+
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
+  final _firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +62,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 40.0,
+                        height: 20.0,
                       ),
 
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -94,6 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
 
                       TextFormField(
+                        controller: _senhaController,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -164,25 +173,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
+
+                      //BOTAO MALDITO
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Please agree to the processing of personal data'),
-                                ),
-                              );
-                            }
+                            login();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -195,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           child: const Text(
-                            'Prosseguir',
+                            'Entrar',
                             style: TextStyle(
                               color: Colors.white, // Cor do texto
                               fontSize: 16.0, // Tamanho do texto
@@ -204,6 +201,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
+
                       const SizedBox(
                         height: 25.0,
                       ),
@@ -289,6 +287,57 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  login() async {
+    try {
+      if (_formSignInKey.currentState!.validate() && rememberPassword) {
+        UserCredential userCredential =
+            await _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _senhaController.text,
+        );
+
+        User? user = userCredential.user;
+
+        if (user != null) {
+          // Login bem-sucedido, navegar para a tela Home
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Home(),
+            ),
+          );
+        } else {
+          // Algo inesperado aconteceu
+          mostrarSnackBar('Erro inesperado ao fazer login');
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'user-not-found') {
+        // Email não cadastrado
+        mostrarSnackBar('Email não cadastrado. Por favor, registre-se.');
+      } else if (e.code == 'wrong-password') {
+        // Senha incorreta
+        mostrarSnackBar('Senha incorreta!');
+      } else {
+        // Tratar outras exceções de forma mais genérica
+        mostrarSnackBar('Dados invalidas!');
+      }
+    } catch (e) {
+      // Lidar com exceções não relacionadas ao Firebase de forma mais genérica
+      mostrarSnackBar('Erro ao fazer login. Por favor, tente novamente.');
+    }
+  }
+
+  void mostrarSnackBar(String mensagem) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensagem),
+        backgroundColor: Colors.redAccent,
       ),
     );
   }

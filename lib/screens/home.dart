@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockmaster/screens/adc_item_screen.dart';
+import 'package:stockmaster/services/autenticacao_service.dart';
 import 'package:stockmaster/theme/colors.dart';
 import 'package:stockmaster/widgets/total_itens_util.dart';
 
@@ -18,6 +19,22 @@ class _HomePageState extends State<Home> {
     return Scaffold(
       backgroundColor: AppColors.lightblack,
       appBar: buildAppBar(),
+      drawer: Drawer(
+        backgroundColor: AppColors.lightblack,
+        child: ListView(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.white,),
+              title: const Text("Sair",),
+              textColor: Colors.white,
+              onTap: () async {
+                await AutenticacaoServico().deslogar();
+                Navigator.pop(context); // Fecha o Drawer após o logout
+              },
+            )
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Container(
           decoration: buildBodyContainerDecoration(),
@@ -29,14 +46,13 @@ class _HomePageState extends State<Home> {
   }
 
   double calculateItemWidth(BuildContext context) {
-    // Calcula a largura dos contêineres TotalItens e ValorTotal com base na largura da tela
     return (MediaQuery.of(context).size.width - 40) / 2 - 5;
   }
 
   AppBar buildAppBar() {
     return AppBar(
       title: const Text(
-        'Stock Master',
+        'Home',
         style: TextStyle(
           color: AppColors.white,
           fontSize: 24,
@@ -46,11 +62,11 @@ class _HomePageState extends State<Home> {
       centerTitle: true,
       backgroundColor: AppColors.lightblack,
       elevation: 0,
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 
   BoxDecoration buildBodyContainerDecoration() {
-    // Configuração da decoração do corpo
     return const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.only(
@@ -61,7 +77,6 @@ class _HomePageState extends State<Home> {
   }
 
   Widget buildBodyContent(double itemWidth) {
-    // Conteúdo do corpo
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Column(
@@ -75,7 +90,6 @@ class _HomePageState extends State<Home> {
   }
 
   Row buildUserGreeting() {
-    // Linha de saudação do usuário
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -93,7 +107,6 @@ class _HomePageState extends State<Home> {
   }
 
   Container buildHistoryIcon() {
-    // Ícone de histórico
     return Container(
       decoration: BoxDecoration(
         color: const Color.fromARGB(131, 78, 78, 81),
@@ -108,43 +121,30 @@ class _HomePageState extends State<Home> {
   }
 
   Row buildTotalItemsAndValue(double itemWidth) {
-    // Linha contendo TotalItens e ValorTotal
     return Row(
       children: [
-        Flexible(
-          child: SizedBox(
-            width: itemWidth,
-            child: const TotalItens(),
-          ),
-        ),
+        TotalItens(),
         const SizedBox(width: 10),
-        Flexible(
-          child: SizedBox(
-            width: itemWidth,
-            child: const ValorTotal(),
-          ),
-        ),
+        ValorTotal(),
       ],
     );
   }
 
   FloatingActionButton buildFloatingActionButton() {
-  // Botão de ação flutuante para adicionar itens
-  return FloatingActionButton.extended(
-    onPressed: () {
-      // Navegar para a tela adcItem
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const AdcItem()),
-      );
-    },
-    icon: const Icon(Icons.add),
-    label: const Text(
-    'Adicionar Item',
-    style: TextStyle(
-      color: AppColors.white, // Defina a cor do texto como branco
-    ),
-  ),
-  backgroundColor: AppColors.orange, // Define a cor do botão como laranja
-  );
-}
+    return FloatingActionButton.extended(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const AdcItem()),
+        );
+      },
+      icon: const Icon(Icons.add, color: Colors.white,),
+      label: const Text(
+        'Adicionar Item',
+        style: TextStyle(
+          color: AppColors.white,
+        ),
+      ),
+      backgroundColor: AppColors.orange,
+    );
+  }
 }
