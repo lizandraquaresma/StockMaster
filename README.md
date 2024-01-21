@@ -10,9 +10,32 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
 - **Produtos:** Visualização, cadastro, edição e remoção de produtos.
 - **Armazenamento:** Utiliza o Cloud Firestore para armazenar dados na nuvem.
 - **Design:** Interface amigável e intuitiva, projetada no Figma.
-- **Organização:** Controle de tarefas com o Trello.
 
-**Como Rodar o App:**
+
+**Recursos Futuros:**
+
+- **Categorias:** 
+  - Os usuarios poderão associar produtos a categorias específicas para facilitar a organização e pesquisa.
+
+- **Histórico de Alterações:** 
+  - Vai registrar a entrada e saida de produtos.
+
+- **Perfil do Usuário:** 
+  - Os usuários vão gerenciar suas informações e configurações personalizadas.
+
+- **Barra Inferior de Navegação:** 
+  - Possibilitará uma navegação mais intuitiva entre as telas do aplicativo.
+
+- **Incremento e Decremento Aprimorados:** 
+  - Tornará a interação com a quantidade de produtos mais fácil e precisa, aprimorando a usabilidade do aplicativo.
+
+- **Recuperação de Senha**
+
+- **Login e Registro com Redes Sociais**
+
+- **Ordenação de Produtos**
+
+**Como Rodar o App**
 
 1. **Instale as Ferramentas:**
    Certifique-se de ter o Flutter, o VS Code, o Android Studio e o Git instalados em sua máquina.
@@ -42,7 +65,7 @@ Lizandra Quaresma
 
 **Contato:**
 - Email: lizandraquaresma.dev@gmail.com
-- LinkedIn: [Lizandra Quaresma](https://www.linkedin.com/in/seu-linkedin)
+- LinkedIn: [Lizandra Quaresma](https://www.linkedin.com/in/lizandraquaresma/)
 
 **Licença:**
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
