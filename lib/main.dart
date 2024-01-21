@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stockmaster/screens/home.dart';
-import 'package:stockmaster/screens/welcome_screen.dart';
+import 'package:stockmaster/screens/Initial_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -16,34 +16,36 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const RoteadorTela(),
+      home: const AppRouter(),
     );
   }
 }
 
-class RoteadorTela extends StatelessWidget {
-  const RoteadorTela({super.key});
+// Roteador de tela baseado no estado de autenticação do usuário
+class AppRouter extends StatelessWidget {
+  const AppRouter({super.key});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.userChanges(),
         builder: (context, snapshot) {
+          // Se o usuário estiver autenticado, exibe a tela principal (Home)
           if (snapshot.hasData) {
-            return const Home();
+            String userId = snapshot.data!.uid;
+            return Home(userId: userId);
           } else {
-            return const TelaInicial();
+            // Se o usuário não estiver autenticado, exibe a tela inicial
+            return const InitialScreen();
           }
         });
   }
 }
-

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'dart:async';
 import 'package:stockmaster/screens/signin_screen.dart';
+import 'package:stockmaster/screens/home.dart';
 import 'package:stockmaster/services/autenticacao_service.dart';
 import 'package:stockmaster/theme/colors.dart';
 import 'package:stockmaster/widgets/snackbar.dart';
-import 'dart:async';
-import 'package:stockmaster/screens/home.dart';
+
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -30,13 +32,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: AppColors.lightblack,
       body: CustomScrollView(
         slivers: [
-          _buildSliverAppBar(),
-          _buildSliverToBoxAdapter(),
+          _buildSliverAppBar(),       // Constrói a barra de aplicativos deslizante
+          _buildSliverToBoxAdapter(), // Constrói o conteúdo principal da tela
         ],
       ),
     );
   }
 
+  // Constrói a barra de aplicativos deslizante
   SliverAppBar _buildSliverAppBar() {
     return SliverAppBar(
       iconTheme: const IconThemeData(color: AppColors.white),
@@ -51,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  // Constrói o conteúdo principal da tela
   SliverToBoxAdapter _buildSliverToBoxAdapter() {
     return SliverToBoxAdapter(
       child: Container(
@@ -96,15 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 }, obscureText: true),
                 const SizedBox(height: 25.0),
-                _buildCheckBox(),
+                _buildCheckBox(),             // Constrói a caixa de seleção de concordância
                 const SizedBox(height: 25.0),
-                _buildButton(),
+                _buildButton(),               // Constrói o botão de registro
                 const SizedBox(height: 30.0),
-                _buildDivider(),
+                _buildDivider(),              // Constrói a linha divisória
                 const SizedBox(height: 30.0),
-                _buildSocialMediaLogos(),
+                _buildSocialMediaLogos(),     // Constrói os logos das redes sociais
                 const SizedBox(height: 25.0),
-                _buildAccountLink(),
+                _buildAccountLink(),          // Constrói o link para a tela de login
                 const SizedBox(height: 20.0),
               ],
             ),
@@ -114,6 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  // Constrói o cabeçalho da tela
   Widget _buildHeader() {
     return const Text(
       'Registre-se',
@@ -156,6 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  // Constrói a caixa de seleção de concordância
   Widget _buildCheckBox() {
     return Row(
       children: [
@@ -185,6 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //Constroi o botão para registrar nova conta
   Widget _buildButton() {
     return SizedBox(
       width: double.infinity,
@@ -209,6 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //divisor de tela entre registro com email e registro com redes sociais
   Widget _buildDivider() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -241,6 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //registro com redes sociais
   Widget _buildSocialMediaLogos() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -251,7 +260,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ],
     );
   }
-
+  
+  //Constroi conexao com a tela de login
   Widget _buildAccountLink() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -283,6 +293,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //função para registro de usuarios no firebase 
   Future<void> _registrarUsuario() async {
     BuildContext currentContext = context; // Capturando o contexto antes da função assíncrona
 
@@ -291,31 +302,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String senha = _senhaController.text;
 
     if (_formSignupKey.currentState!.validate() && agreePersonalData) {
-      String? erro = await _autenticacaoServico.registrarUsuario(
+      String? uid = await _autenticacaoServico.registrarUsuario(
         nome: nome,
         email: email,
         senha: senha,
       );
 
-      if (erro != null) {
-        if (!agreePersonalData) {
-          MostrarSnackBar(
-            context: currentContext,
-            texto: 'Concorde com a política de privacidade',
-          );
-        } else {
-          MostrarSnackBar(context: currentContext, texto: erro);
-        }
+      if (uid != null) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => Home(userId: uid)),
+        );
+      }
+    } else {
+      if (!agreePersonalData) {
+        _mostrarSnackBar(
+          context: currentContext,
+          texto: 'Concorde com a política de privacidade',
+        );
       } else {
-        if (mounted) {
-          Navigator.pushReplacement(
-            currentContext,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
-        }
+        _mostrarSnackBar(context: currentContext, texto: 'Erro no registro');
       }
     }
   }
+}
 
   void _mostrarSnackBar(
       {required BuildContext context, required String texto}) {

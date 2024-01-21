@@ -14,8 +14,10 @@ class AutenticacaoServico {
 
       await userCredential.user!.updateDisplayName(nome);
 
+      String uid = userCredential.user!.uid;
+
       print('Usuário criado com sucesso: ${userCredential.user?.uid}');
-      return null;
+      return uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         print('Email já cadastrado');
@@ -36,6 +38,23 @@ class AutenticacaoServico {
   }*/
 
   Future<void> deslogar() async {
-    return _firebaseAuth.signOut();
+    return await _firebaseAuth.signOut();
   }
+
+  Future<String?> getNomeUsuario(String userId) async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+
+      if (user != null && user.uid == userId) {
+        return user.displayName;
+      } else {
+        // Usuário não autenticado ou ID de usuário inválido
+        return null;
+      }
+    } catch (e) {
+      print('Erro ao obter o nome do usuário: $e');
+      return null;
+    }
+  }
+
 }

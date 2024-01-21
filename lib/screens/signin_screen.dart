@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:stockmaster/screens/home.dart';
 import 'package:stockmaster/screens/signup_screen.dart';
 import 'package:stockmaster/theme/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -16,9 +16,9 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
 
-  final _emailController = TextEditingController();
-  final _senhaController = TextEditingController();
-  final _firebaseAuth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -37,257 +37,230 @@ class _SignInScreenState extends State<SignInScreen> {
                   fit: BoxFit.cover),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 20.0),
-              decoration: const BoxDecoration(
-                color: AppColors.ice,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formSignInKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.darkgrey,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-
-                      TextFormField(
-                        controller: _emailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          label: const Text('Email'),
-                          hintText: 'Enter Email',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
-                          filled: true,
-                          fillColor:
-                              AppColors.white, // Altere para a cor desejada
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-
-                      TextFormField(
-                        controller: _senhaController,
-                        obscureText: true,
-                        obscuringCharacter: '*',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Senha Invalida';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          label: const Text('Senha'),
-                          hintText: 'Insira a senha',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
-                          filled: true,
-                          fillColor: AppColors.white,
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: rememberPassword,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    rememberPassword = value!;
-                                  });
-                                },
-                                activeColor: AppColors.orange,
-                              ),
-                              const Text(
-                                'Lembre-me',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            child: const Text(
-                              'Esqueceu a senha?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.orange,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-
-                      //BOTAO MALDITO
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            login();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                AppColors.orange, // Cor de fundo do botão
-                            padding: const EdgeInsets.all(
-                                16.0), // Preenchimento interno do botão
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  8.0), // Borda arredondada
-                            ),
-                          ),
-                          child: const Text(
-                            'Entrar',
-                            style: TextStyle(
-                              color: Colors.white, // Cor do texto
-                              fontSize: 16.0, // Tamanho do texto
-                              fontWeight: FontWeight.bold, // Peso da fonte
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
-                            child: Text(
-                              'Faça o login com',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Logo(Logos.twitter),
-                          Logo(Logos.google),
-                          Logo(Logos.apple),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      // don't have an account
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Não possui uma conta? ',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (e) => const SignUpScreen(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'Registre-se',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.orange,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+             _buildForm(),
         ],
       ),
+    );
+  }
+
+  Widget _buildForm() {
+    return SliverToBoxAdapter(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 20.0),
+        decoration: const BoxDecoration(
+          color: AppColors.ice,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40.0),
+            topRight: Radius.circular(40.0),
+          ),
+        ),
+        child: Form(
+          key: _formSignInKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildHeaderText(),
+              const SizedBox(height: 20.0),
+              _buildTextField('Email', 'Insira o email', _emailController,
+                  (value) => value == null || value.isEmpty ? 'Email invalido!' : null),
+              const SizedBox(height: 25.0),
+              _buildTextField('Senha', 'Insira a senha', _senhaController,
+                  (value) => value == null || value.isEmpty ? 'Senha invalida!' : null,
+                  obscureText: true),
+              const SizedBox(height: 25.0),
+              _buildRememberMe(),
+              const SizedBox(height: 25.0),
+              _buildSignInButton(),
+              const SizedBox(height: 25.0),
+              _buildDivider('Faça o login com'),
+              const SizedBox(height: 25.0),
+              _buildSocialMediaLogos(),
+              const SizedBox(height: 25.0),
+              _buildSignUpLink(),
+              const SizedBox(height: 20.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderText() {
+    return const Text(
+      'Login',
+      style: TextStyle(
+        fontSize: 25.0,
+        fontWeight: FontWeight.w900,
+        color: AppColors.darkgrey,
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, String hintText,
+      TextEditingController controller, String? Function(String?) validator,
+      {bool obscureText = false}) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      obscuringCharacter: '*',
+      validator: validator,
+      decoration: InputDecoration(
+        label: Text(label),
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Colors.black26,
+        ),
+        filled: true,
+        fillColor: AppColors.white,
+        border: _buildOutlineInputBorder(),
+        enabledBorder: _buildOutlineInputBorder(),
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildOutlineInputBorder() {
+    return OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Colors.black12,
+      ),
+      borderRadius: BorderRadius.circular(10),
+    );
+  }
+
+   Widget _buildRememberMe() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Checkbox(
+              value: rememberPassword,
+              onChanged: (bool? value) {
+                setState(() {
+                  rememberPassword = value!;
+                });
+              },
+              activeColor: AppColors.orange,
+            ),
+            const Text(
+              'Lembre-se',
+              style: TextStyle(
+                color: Colors.black45,
+              ),
+            ),
+          ],
+        ),
+        GestureDetector(
+          onTap: () {
+            // ... (código anterior)
+          },
+          child: const Text(
+            'Esqueceu a senha?',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.orange,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: login,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.orange,
+          padding: const EdgeInsets.all(16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        child: const Text(
+          'Entrar',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider(String text) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Divider(
+            thickness: 0.7,
+            color: Colors.grey.withOpacity(0.5),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 0,
+            horizontal: 10,
+          ),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.black45,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            thickness: 0.7,
+            color: Colors.grey.withOpacity(0.5),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialMediaLogos() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Logo(Logos.twitter),
+        Logo(Logos.google),
+        Logo(Logos.apple),
+      ],
+    );
+  }
+
+  Widget _buildSignUpLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Não possui uma conta? ',
+          style: TextStyle(
+            color: Colors.black45,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (e) => const SignUpScreen(),
+              ),
+            );
+          },
+          child: const Text(
+            'Registre-se',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.orange,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -303,13 +276,10 @@ class _SignInScreenState extends State<SignInScreen> {
         User? user = userCredential.user;
 
         if (user != null) {
+          // Obtendo o UID do usuário logado
+          String uid = user.uid;
           // Login bem-sucedido, navegar para a tela Home
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Home(),
-            ),
-          );
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Home(userId: uid))); // Passando o UID para a tela Home
         } else {
           // Algo inesperado aconteceu
           mostrarSnackBar('Erro inesperado ao fazer login');
@@ -324,11 +294,11 @@ class _SignInScreenState extends State<SignInScreen> {
         // Senha incorreta
         mostrarSnackBar('Senha incorreta!');
       } else {
-        // Tratar outras exceções de forma mais genérica
+        // Tratando outras exceções de forma mais genérica
         mostrarSnackBar('Dados invalidas!');
       }
     } catch (e) {
-      // Lidar com exceções não relacionadas ao Firebase de forma mais genérica
+      // Lidando com exceções não relacionadas ao Firebase de forma mais genérica
       mostrarSnackBar('Erro ao fazer login. Por favor, tente novamente.');
     }
   }

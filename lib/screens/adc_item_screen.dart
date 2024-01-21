@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stockmaster/theme/colors.dart';
+import 'package:stockmaster/database/db_firestore.dart';
+import 'package:stockmaster/screens/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AdcItem extends StatelessWidget {
-  const AdcItem({Key? key}) : super(key: key);
+  AdcItem({Key? key}) : super(key: key);
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +21,8 @@ class AdcItem extends StatelessWidget {
         decoration: buildBodyContainerDecoration(),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: buildInputForm(),
+          child:
+              buildInputForm(context), // Passe o contexto para buildInputForm
         ),
       ),
     );
@@ -46,22 +55,38 @@ class AdcItem extends StatelessWidget {
     );
   }
 
-  Widget buildInputForm() {
+  Widget buildInputForm(BuildContext context) {
     return Column(
       children: [
-        buildTextField(label: 'Título', hintText: 'Informe o título'),
-        buildTextField(label: 'Descrição', hintText: 'Informe a descrição'),
-        buildTextField(label: 'Quantidade', hintText: 'Informe a quantidade'),
-        buildTextField(label: 'Valor', hintText: 'Informe o valor'),
-        buildSubmitButton(),
+        buildTextField(
+            controller: titleController,
+            label: 'Título',
+            hintText: 'Informe o título'),
+        buildTextField(
+            controller: descriptionController,
+            label: 'Descrição',
+            hintText: 'Informe a descrição'),
+        buildTextField(
+            controller: quantityController,
+            label: 'Quantidade',
+            hintText: 'Informe a quantidade'),
+        buildTextField(
+            controller: priceController,
+            label: 'Valor',
+            hintText: 'Informe o valor'),
+        buildSubmitButton(context), // Passe o contexto para buildSubmitButton
       ],
     );
   }
 
-  Widget buildTextField({required String label, required String hintText}) {
+  Widget buildTextField(
+      {required TextEditingController controller,
+      required String label,
+      required String hintText}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        controller: controller,
         style: const TextStyle(color: AppColors.black),
         decoration: InputDecoration(
           labelText: label,
@@ -74,12 +99,46 @@ class AdcItem extends StatelessWidget {
     );
   }
 
-  Widget buildSubmitButton() {
+  Widget buildSubmitButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          // Adicione aqui a lógica para processar os dados do formulário
+        onPressed: () async {
+          // Obtenha o UID do usuário logado
+          String? uid = obterUidUsuarioLogado();
+
+          if (uid != null) {
+            // Adiciona o produto ao Firebase Firestore com o UID do usuário
+            await addProduct(
+              uid,
+              Product(
+                title: titleController.text,
+                description: descriptionController.text,
+                quantity: int.parse(quantityController.text),
+                price: double.parse(priceController.text),
+              ),
+            );
+
+            // Limpa os campos após adicionar o produto
+            titleController.clear();
+            descriptionController.clear();
+            quantityController.clear();
+            priceController.clear();
+
+            // Exibe uma mensagem de sucesso ou realiza a ação desejada
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Produto adicionado com sucesso!')),
+            );
+
+            // Navega de volta para a tela Home após adicionar o produto
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => Home(userId: uid)));
+          } else {
+            // Caso não haja usuário autenticado
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Nenhum usuário autenticado')),
+            );
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.orange,
@@ -93,5 +152,19 @@ class AdcItem extends StatelessWidget {
         child: const Text('Adicionar Produto'),
       ),
     );
+  }
+
+  String? obterUidUsuarioLogado() {
+    // Obtém o usuário atualmente autenticado
+    User? user = FirebaseAuth.instance.currentUser;
+
+    // Verifica se há um usuário autenticado
+    if (user != null) {
+      // Retorna o UID do usuário autenticado
+      return user.uid;
+    } else {
+      // Caso não haja usuário autenticado
+      return null;
+    }
   }
 }
