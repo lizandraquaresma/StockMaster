@@ -5,18 +5,18 @@ void showDeleteConfirmationDialog(BuildContext context, VoidCallback onConfirm) 
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Confirmar Exclusão'),
-        content: Text('Tem certeza de que deseja excluir este produto?'),
+        title: const Text('Confirmar Exclusão'),
+        content: const Text('Tem certeza de que deseja excluir este produto?'),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Fecha o alerta sem excluir
             },
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: onConfirm,
-            child: Text('Confirmar'),
+            child: const Text('Confirmar'),
           ),
         ],
       );
