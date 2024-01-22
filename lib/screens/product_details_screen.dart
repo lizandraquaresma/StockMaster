@@ -9,7 +9,7 @@ class ProductDetailsScreen extends StatelessWidget {
   final String price;
 
   // Construtor que recebe os detalhes do produto
-  ProductDetailsScreen({
+  const ProductDetailsScreen({
     Key? key, // Adicione o parâmetro 'key'
     required this.title,
     required this.description,

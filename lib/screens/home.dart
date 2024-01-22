@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockmaster/screens/adc_item_screen.dart';
 import 'package:stockmaster/screens/edit_product_screen.dart';
+import 'package:stockmaster/screens/Initial_screen.dart';
 import 'package:stockmaster/widgets/valor_total.dart';
 import 'package:stockmaster/services/autenticacao_service.dart';
 import 'package:stockmaster/database/db_firestore.dart';
@@ -51,8 +52,14 @@ class _HomePageState extends State<Home> {
               ),
               textColor: Colors.white,
               onTap: () async {
+                final currentContext = context; // Captura o contexto
+
                 await AutenticacaoServico().deslogar();
-                Navigator.pop(context); // Fecha o Drawer após o logout
+
+                // Use o contexto capturado para a navegação
+                Navigator.of(currentContext).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const InitialScreen()),
+                );
               },
             )
           ],
@@ -234,9 +241,10 @@ class _HomePageState extends State<Home> {
                   context: context,
                   builder: (BuildContext context) {
                     return EditProductBottomSheet(
-                        userId: widget.userId, 
-                        productId: document.id,
-                        reloadData: _reloadData,);
+                      userId: widget.userId,
+                      productId: document.id,
+                      reloadData: _reloadData,
+                    );
                   },
                 );
               },
