@@ -63,7 +63,7 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
 
 6. **Apk**
    - Caso tenha interesse em baixar o apk diretamente no seu dispositivo mobile, utilize o botão:
-   - [![Baixar APK](https://img.shields.io/badge/Baixar%20APK-Download-blue?style=for-the-badge&logo=android)](https://drive.google.com/uc?export=download&id=1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ)
+   - [![StockMaster](https://img.shields.io/badge/Baixar%20APK-Download-blue?style=for-the-badge&logo=android)](https://drive.google.com/uc?export=download&id=1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ)
    - Você também pode baixar através do link: [StockMaster App](https://drive.google.com/file/d/1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ/view?usp=sharing)
 
 **Autora:**
