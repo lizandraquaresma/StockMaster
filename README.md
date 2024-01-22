@@ -2,7 +2,6 @@
   <img src="assets/images/stockmaster.png" alt="StockMaster Logo" width="500">
 </p>
 
-**Descrição:**
 O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutter, que oferece funcionalidades como login, registro de usuários, visualização, cadastro, edição e remoção de produtos. Os dados são armazenados na nuvem usando o Firebase Authentication para autenticação e o Cloud Firestore para o banco de dados.
 
 **Recursos:**
@@ -60,7 +59,11 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
 5. **Nota:**
    - É necessário configurar um projeto no [Firebase Console](https://console.firebase.google.com/) e adicionar o arquivo `google-services.json` (para Android) e `GoogleService-Info.plist` (para iOS) ao projeto Flutter para utilizar os serviços do Firebase.
 
-**Autor:**
+6. **Apk**
+   - Caso tenha interesse em baixar o apk diretamente no seu dispositivo mobile, utilize o botão:
+   - [![Baixar APK](https://img.shields.io/badge/Baixar%20APK-Download-blue?style=for-the-badge&logo=android)](https://drive.google.com/uc?export=download&id=1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ)
+
+**Autora:**
 Lizandra Quaresma
 
 **Contato:**
@@ -69,3 +72,4 @@ Lizandra Quaresma
 
 **Licença:**
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
