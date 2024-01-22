@@ -81,7 +81,7 @@ class DescricaoDoApp extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            "Controle de estoque e rastreamento de operações de armazém com base na venda.",
+            "Simples e eficiente! Gerencie seu estoque com facilidade: liste, adicione, edite e remova produtos em um instante.",
             textAlign: TextAlign.center,
             style: AppTextStyles.body(context),
           ),
@@ -113,7 +113,7 @@ class BotaoSetaParaDireita extends StatelessWidget {
       child: Icon(
         Icons.arrow_forward,
         color: Colors.white,
-        size: MediaQuery.of(context).size.width * 0.12,
+        size: MediaQuery.of(context).size.width * 0.11,
       ),
     );
   }

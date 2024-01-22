@@ -150,9 +150,12 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ],
         ),
-        GestureDetector(
+
+        //Essa função ainda será implementada
+
+        /*GestureDetector(
           onTap: () {
-            // ... (código anterior)
+            
           },
           child: const Text(
             'Esqueceu a senha?',
@@ -161,7 +164,7 @@ class _SignInScreenState extends State<SignInScreen> {
               color: AppColors.orange,
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }

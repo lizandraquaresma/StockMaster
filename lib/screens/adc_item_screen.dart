@@ -69,12 +69,14 @@ class AdcItem extends StatelessWidget {
         buildTextField(
             controller: quantityController,
             label: 'Quantidade',
-            hintText: 'Informe a quantidade'),
+            hintText: 'Informe a quantidade',
+            keyboardType: TextInputType.number), // Adiciona keyboardType
         buildTextField(
             controller: priceController,
             label: 'Valor',
-            hintText: 'Informe o valor'),
-        buildSubmitButton(context), // Passe o contexto para buildSubmitButton
+            hintText: 'Informe o valor',
+            keyboardType: const TextInputType.numberWithOptions(decimal: true)),
+        buildSubmitButton(context),
       ],
     );
   }
@@ -82,12 +84,14 @@ class AdcItem extends StatelessWidget {
   Widget buildTextField(
       {required TextEditingController controller,
       required String label,
-      required String hintText}) {
+      required String hintText,
+      TextInputType? keyboardType}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
         style: const TextStyle(color: AppColors.black),
+        keyboardType: keyboardType, // Adiciona keyboardType
         decoration: InputDecoration(
           labelText: label,
           hintText: hintText,

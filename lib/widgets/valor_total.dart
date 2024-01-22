@@ -33,7 +33,7 @@ class ValorTotal extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    'Valor total:',
+                    'R\$ total:',
                     style: TextStyle(
                       color: AppColors.white,
                       fontSize: 15,
@@ -41,7 +41,7 @@ class ValorTotal extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'R\$ ${totalPrice.toStringAsFixed(2)}',
+                   totalPrice.toStringAsFixed(2),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 20,

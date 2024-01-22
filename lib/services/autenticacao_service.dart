@@ -25,17 +25,7 @@ class AutenticacaoServico {
       return 'Erro desconhecido';
     }
   }
-
-  /*Future<String?> logarUsuario(
-      {required String email, required String senha}) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: senha);
-      return null;
-    } on FirebaseAuthException catch (e) {
-      return e.message;
-    }
-  }*/
+  
 
   Future<void> deslogar() async {
     return await _firebaseAuth.signOut();

@@ -11,7 +11,7 @@ class EditProductBottomSheet extends StatefulWidget {
   const EditProductBottomSheet({
     required this.userId,
     required this.productId,
-    required this.reloadData, 
+    required this.reloadData,
     this.key,
   }) : super(key: key);
 
@@ -20,7 +20,6 @@ class EditProductBottomSheet extends StatefulWidget {
 }
 
 class EditProductBottomSheetState extends State<EditProductBottomSheet> {
-  
   // Controladores para os campos de edição
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -70,9 +69,11 @@ class EditProductBottomSheetState extends State<EditProductBottomSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Editar Produto',
-            style: Theme.of(context).textTheme.titleLarge,
+          Center(
+            child: Text(
+              'Editar Produto',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           TextField(
             controller: _titleController,
