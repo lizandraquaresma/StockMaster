@@ -60,7 +60,7 @@ class TotalItensState extends State<TotalItens> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    'Total de Itens',
+                    'Produtos:',
                     style: TextStyle(
                       color: AppColors.white,
                       fontSize: 15,
