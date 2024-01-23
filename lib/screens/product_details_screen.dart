@@ -10,7 +10,7 @@ class ProductDetailsScreen extends StatelessWidget {
 
   // Construtor que recebe os detalhes do produto
   const ProductDetailsScreen({
-    Key? key, // Adicione o parâmetro 'key'
+    Key? key, 
     required this.title,
     required this.description,
     required this.quantity,
