@@ -31,6 +31,7 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
 - **Recuperação de Senha**
 
 - **Login e Registro através de Redes Sociais**
+  - Os Icons já estão presentes nas interfaces de login e registro, porém a execução será implementada na próxima atualização.
 
 - **Ordenação de Produtos**
   
