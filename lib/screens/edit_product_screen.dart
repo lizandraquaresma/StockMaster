@@ -104,13 +104,13 @@ class EditProductBottomSheetState extends State<EditProductBottomSheet> {
                 price: double.parse(_priceController.text),
               );
 
-              // Chame a função de edição do serviço
+              // Chama a função de edição do serviço
               editProduct(widget.userId, widget.productId, updatedProduct);
 
-              // Chame a função de recarregar dados diretamente aqui
+              // Chama a função de recarregar dados diretamente aqui
               widget.reloadData();
 
-              // Feche o BottomSheet/modal
+              // Fecha o BottomSheet/modal
               Navigator.pop(context);
             },
             child: const Text('Salvar Alterações'),
