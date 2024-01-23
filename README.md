@@ -63,9 +63,10 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
    
    ```yaml
    dependencies:
-     firebase_core: ^1.10.6
-     firebase_auth: ^4.5.0
-     cloud_firestore: ^3.3.0
+    firebase_core: ^2.24.2
+    firebase_auth: ^4.16.0
+    cloud_firestore: ^4.14.0
+    flutter_native_splash: ^2.3.9
    ```
 
    Execute `flutter pub get` para baixar as dependências.
