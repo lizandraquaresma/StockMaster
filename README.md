@@ -36,10 +36,10 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
   
 - **Refinamento das Interfaces**
 
-**Como Rodar o App**
+**Como Rodar o App:**
 
 1. **Instale as Ferramentas:**
-   Certifique-se de ter o Flutter, o VS Code, o Android Studio e o Git instalados em sua máquina.
+   Certifique-se de ter o Flutter, o VS Code, o Android Studio, o Java e o Git instalados em sua máquina.
 
 2. **Clonar o Repositório:**
    ```
@@ -52,16 +52,47 @@ O StockMaster é um aplicativo de gerenciamento de estoque desenvolvido em Flutt
    flutter pub get
    ```
 
-4. **Executar o App:**
+4. **Configurar o Firebase:**
+   - Acesse o [Firebase Console](https://console.firebase.google.com/) e crie um novo projeto.
+   - Adicione um aplicativo para Android e/ou iOS ao projeto e faça o download dos arquivos de configuração (`google-services.json` para Android e `GoogleService-Info.plist` para iOS).
+   - Coloque esses arquivos na pasta apropriada no projeto Flutter (`android/app` para Android e `ios/Runner` para iOS).
+
+5. **Configurar Dependências do Firebase no `pubspec.yaml`:**
+   Certifique-se de que as dependências do Firebase estão listadas no arquivo `pubspec.yaml`. Exemplo:
+   
+   ```yaml
+   dependencies:
+     firebase_core: ^1.10.6
+     firebase_auth: ^4.5.0
+     cloud_firestore: ^3.3.0
+   ```
+
+   Execute `flutter pub get` para baixar as dependências.
+
+6. **Inicializar o Firebase no Código Flutter:**
+   No código Flutter, inicialize o Firebase no início do aplicativo, geralmente no método `main()` ou no método `initState()` de um widget. Exemplo:
+
+   ```dart
+   import 'package:firebase_core/firebase_core.dart';
+
+   void main() async {
+     WidgetsFlutterBinding.ensureInitialized();
+     await Firebase.initializeApp();
+     runApp(MyApp());
+   }
+   ```
+
+7. **Executar o App:**
    Certifique-se de ter um emulador Android ou um dispositivo físico conectado.
    ```
    flutter run
    ```
 
-5. **Nota:**
-   - É necessário configurar um projeto no [Firebase Console](https://console.firebase.google.com/) e adicionar o arquivo `google-services.json` (para Android) e `GoogleService-Info.plist` (para iOS) ao projeto Flutter para utilizar os serviços do Firebase.
+8. **Nota:**
+   - Certifique-se de seguir a documentação do Firebase para a versão específica que está utilizando.
 
-6. **Apk**
+
+9. **Apk**
    - Caso tenha interesse em baixar o apk diretamente no seu dispositivo mobile, utilize o botão:
    - [![StockMaster](https://img.shields.io/badge/Baixar%20APK-Download-blue?style=for-the-badge&logo=android)](https://drive.google.com/uc?export=download&id=1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ)
    - Você também pode baixar através do link: [StockMaster App](https://drive.google.com/file/d/1SXvI-HYryFgROk3YnDPcsBHnuFamhgFQ/view?usp=sharing)
@@ -75,4 +106,6 @@ Lizandra Quaresma
 
 **Licença:**
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+
 
